@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d22a025a-f6b6-4563-8b4a-dfb88e697c14" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="6eba13cc-3c7f-451e-a167-5f559e8fec2c" environment="${mule.env}"/>
+	<configuration-properties doc:name="Configuration properties" doc:id="4783f310-d707-4e7f-8687-c5e1ea0206cc" file="json-logger.properties" />
+	<flow name="firstFlow" doc:id="13394c7f-9bcd-4d2d-8b95-75a63a3d8442" >
+		<http:listener doc:name="Listener" doc:id="effb22ab-f5e1-49a4-8cd2-a9d2fdd4a44b" config-ref="HTTP_Listener_config" path="/hello"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b1411d0b-fca3-448c-b273-df94fd787a2e" message='#[uuid() ++ " - Flow started"]'/>
+		<set-payload value='#["Hello World from Mule 4 Application!!"]' doc:name="Set Payload" doc:id="9f6411de-bda3-4fa7-8c75-7b182fe58b0d" />
+		<json-logger:logger doc:name="Ending Logger" doc:id="5bc720b7-8720-4b07-989f-7e7c0c1260f6" config-ref="JSON_Logger_Config" message="flow ended with json logger"/>
+	</flow>
+</mule>
